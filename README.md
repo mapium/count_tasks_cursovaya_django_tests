@@ -14,7 +14,14 @@ pip install -r requirements.txt
 ```bash
 python -m pytest -q
 ```
-
+3.1. Запуск отдельных UI тестов: 
+```bash
+python -m pytest -q ui/
+```
+3.2. Запуск отдельных API тестов: 
+```bash
+python -m pytest -q api/
+```
 ### Какие тесты реализованы
 - `test_auth.py` — вход, ошибки валидации входа, регистрация, проверка несовпадающих паролей.
 - `test_dashboard.py` — загрузка дашборда и смена статуса задачи.
