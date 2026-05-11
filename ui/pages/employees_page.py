@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 
-from tests.pages.base_page import BasePage, Locator
+from ui.pages.base_page import BasePage, Locator
 
 
 class EmployeesPage(BasePage):
@@ -17,6 +17,7 @@ class EmployeesPage(BasePage):
     phone_number = Locator(By.CSS_SELECTOR, "form.modal-dialog__body input[name='phone_number']")
     email = Locator(By.CSS_SELECTOR, "form.modal-dialog__body input[name='email']")
     passport_data = Locator(By.CSS_SELECTOR, "form.modal-dialog__body input[name='passport_data']")
+    user_id = Locator(By.CSS_SELECTOR, "form.modal-dialog__body select[name='user_id']")
     department_id = Locator(By.CSS_SELECTOR, "form.modal-dialog__body select[name='department_id']")
     is_active = Locator(By.CSS_SELECTOR, "form.modal-dialog__body input[name='is_active']")
     submit_btn = Locator(By.CSS_SELECTOR, "form.modal-dialog__body button[type='submit']")

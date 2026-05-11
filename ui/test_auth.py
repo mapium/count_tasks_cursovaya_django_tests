@@ -1,6 +1,6 @@
 import pytest
 
-from tests.pages.login_page import AuthPage
+from ui.pages.login_page import AuthPage
 
 
 @pytest.mark.smoke

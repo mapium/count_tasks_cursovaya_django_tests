@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 
-from tests.pages.base_page import BasePage, Locator
+from ui.pages.base_page import BasePage, Locator
 
 
 class ReportsPage(BasePage):

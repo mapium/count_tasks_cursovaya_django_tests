@@ -3,8 +3,20 @@ import re
 import pytest
 from selenium.webdriver.common.by import By
 
-from tests.pages.employees_page import EmployeesPage
-from tests.pages.login_page import LoginPage
+from ui.pages.employees_page import EmployeesPage
+from ui.pages.login_page import LoginPage
+
+
+def _find_employee_id_by_last_name(browser, last_name: str) -> int | None:
+    try:
+        card = browser.find_element(
+            By.XPATH,
+            f"//article[contains(@class,'employee-card')][.//h4[contains(.,\"{last_name}\")]]",
+        )
+        edit = card.find_element(By.CSS_SELECTOR, "a[href*='edit_id=']")
+        return int(re.search(r"edit_id=(\d+)", edit.get_attribute("href") or "").group(1))
+    except Exception:
+        return None
 
 
 @pytest.mark.smoke
@@ -44,6 +56,9 @@ def test_employees_search_by_last_name(browser, base_url, ui_username, ui_passwo
     browser.get(f"{base_url}/employees/?q={last_name[:5]}")
     EmployeesPage(browser).wait_loaded()
     assert last_name.lower() in browser.page_source.lower()
+    employee_id = _find_employee_id_by_last_name(browser, last_name)
+    if employee_id:
+        EmployeesPage(browser).submit_delete_for_employee(employee_id).wait_loaded()
 
 
 @pytest.mark.requires_creds
@@ -87,6 +102,9 @@ def test_admin_or_manager_can_create_employee(browser, base_url, ui_username, ui
         pytest.skip("Сессия истекла до проверки поиска после создания")
     if last_name.lower() not in browser.page_source.lower():
         pytest.skip("Сотрудник не найден в выдаче сразу после создания (асинхронность API)")
+    employee_id = _find_employee_id_by_last_name(browser, last_name)
+    if employee_id:
+        EmployeesPage(browser).submit_delete_for_employee(employee_id).wait_loaded()
 
 
 @pytest.mark.requires_creds
@@ -170,14 +188,8 @@ def test_employee_edit_and_delete_created_employee(browser, base_url, ui_usernam
 
     browser.get(f"{base_url}/employees/?q={last_name}")
     EmployeesPage(browser).wait_loaded()
-    try:
-        card = browser.find_element(
-            By.XPATH,
-            f"//article[contains(@class,'employee-card')][.//h4[contains(.,\"{last_name}\")]]",
-        )
-        edit = card.find_element(By.CSS_SELECTOR, "a[href*='edit_id=']")
-        employee_id = int(re.search(r"edit_id=(\d+)", edit.get_attribute("href") or "").group(1))
-    except Exception:
+    employee_id = _find_employee_id_by_last_name(browser, last_name)
+    if employee_id is None:
         pytest.skip("Карточка сотрудника не найдена в списке")
 
     page = EmployeesPage(browser)

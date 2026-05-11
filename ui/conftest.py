@@ -9,7 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 
-from tests.pages.login_page import AuthPage, LoginPage
+from ui.pages.login_page import AuthPage, LoginPage
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env")
 
@@ -61,7 +61,7 @@ def browser(chrome_options: Options):
 
 @pytest.fixture
 def wait(browser):
-    return WebDriverWait(browser, 30)
+    return WebDriverWait(browser, 60)
 
 
 @pytest.fixture

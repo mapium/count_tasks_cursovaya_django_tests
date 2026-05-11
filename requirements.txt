@@ -3,3 +3,4 @@ selenium
 faker
 requests
 python-dotenv
+requests

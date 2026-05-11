@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 
-from tests.pages.base_page import BasePage, Locator
+from ui.pages.base_page import BasePage, Locator
 
 
 class TaskCreatePage(BasePage):
@@ -25,6 +25,17 @@ class TaskCreatePage(BasePage):
 
     def set_select_value(self, locator: Locator, value: str):
         Select(self.find(locator)).select_by_value(value)
+        return self
+
+    def set_select_raw_value(self, locator: Locator, value: str):
+        el = self.find(locator)
+        self.driver.execute_script(
+            "arguments[0].value = arguments[1];"
+            "arguments[0].dispatchEvent(new Event('input', {bubbles:true}));"
+            "arguments[0].dispatchEvent(new Event('change', {bubbles:true}));",
+            el,
+            value,
+        )
         return self
 
     def set_select_index(self, locator: Locator, index: int):

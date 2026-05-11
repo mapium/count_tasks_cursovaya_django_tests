@@ -5,7 +5,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 
-from tests.pages.base_page import BasePage, Locator
+from ui.pages.base_page import BasePage, Locator
 
 
 class DashboardPage(BasePage):
